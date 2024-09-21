@@ -3,26 +3,29 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './UserDetails.css';
 
+
 function UserDetails() {
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/users/')
+    axios.get(`${apiUrl}/api/users/`)
       .then(response => setUsers(response.data))
       .catch(error => console.log(error));
-  }, []);
+  }, [apiUrl]);
 
   const handleSearch = () => {
     // Perform search query to find users or books
-    axios.get(`http://127.0.0.1:8000/api/users/?search=${searchQuery}`)
+    axios.get(`${apiUrl}/api/users/?search=${searchQuery}`)
       .then(response => {
         if (response.data.length > 0) {
           setUsers(response.data);
         } else {
           // If no users found, search for books
-          axios.get(`http://127.0.0.1:8000/api/books/?search=${searchQuery}`)
+          axios.get(`${apiUrl}/api/books/?search=${searchQuery}`)
             .then(bookResponse => {
               if (bookResponse.data.length > 0) {
                 // Redirect to book details if a book is found
