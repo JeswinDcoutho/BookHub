@@ -9,18 +9,17 @@ function BookDetail() {
   const navigate = useNavigate();
 
   // Set the API URL from the environment variable or fallback to localhost
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
     // Fetch the book details by ID from the backend
-    axios.get(`${apiUrl}/api/books/${id}/`)  // Use apiUrl here
+    axios.get(`http://127.0.0.1:8000/api/books${id}/`)  // Use apiUrl here
       .then(response => {
         setBook(response.data);
       })
       .catch(error => {
         console.error("There was an error fetching the book details!", error);
       });
-  }, [id, apiUrl]);
+  }, [id]);
 
   // Navigate back to the catalog
   const goBack = () => {

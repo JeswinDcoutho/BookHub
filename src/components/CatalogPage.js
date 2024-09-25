@@ -8,23 +8,22 @@ function CatalogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
-    axios.get(`${apiUrl}/api/books/`)
+    axios.get(`http://127.0.0.1:8000/api/books/`)
       .then(response => setBooks(response.data))
       .catch(error => console.log(error));
-  }, [apiUrl]);
+  }, []);
 
   const handleSearch = () => {
     // Search for books or users based on query
-    axios.get(`${apiUrl}/api/books/?search=${searchQuery}`)
+    axios.get(`http://127.0.0.1:8000/api/books/?search=${searchQuery}`)
       .then(response => {
         if (response.data.length > 0) {
           setBooks(response.data);
         } else {
           // If no books found, search for users
-          axios.get(`${apiUrl}/api/users/?search=${searchQuery}`)
+          axios.get(`http://127.0.0.1:8000/api/users/?search=${searchQuery}`)
             .then(userResponse => {
               if (userResponse.data.length > 0) {
                 navigate(`/users`); // Redirect to user details
@@ -63,7 +62,7 @@ function CatalogPage() {
             <img src={book.image} alt={book.title} />
             <h3>{book.title}</h3>
             <p>by {book.author}</p>
-            <p>${book.price}</p>
+            <p>₹{book.price}</p>
             <button onClick={() => navigate(`/books/${book.id}`)}>View Details</button>
           </div>
         ))}
